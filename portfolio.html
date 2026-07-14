@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Abhi Shah | ML & Python Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #CC0000;
+      --red-dark: #990000;
+      --navy: #1a1a2e;
+      --navy-light: #16213e;
+      --yellow: #FFD700;
+      --yellow-dark: #ccac00;
+      --white: #f8f8f8;
+      --gray: #a0a0b0;
+      --card-bg: #0f0f23;
+      --pixel: 'Press Start 2P', monospace;
+      --body: 'Inter', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--navy);
+      color: var(--white);
+      font-family: var(--body);
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,215,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,215,0,0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(26,26,46,0.95);
+      border-bottom: 3px solid var(--red);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      backdrop-filter: blur(8px);
+    }
+    .nav-logo {
+      font-family: var(--pixel);
+      font-size: 0.6rem;
+      color: var(--yellow);
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 0 var(--red);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--pixel);
+      font-size: 0.45rem;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--yellow); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 2rem 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .pokedex-hero {
+      background: var(--card-bg);
+      border: 4px solid var(--red);
+      border-radius: 20px;
+      padding: 2.5rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 0 60px rgba(204,0,0,0.25), 0 0 0 2px var(--red-dark);
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 2.5rem;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .pokedex-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--red), var(--yellow), var(--red));
+    }
+    .pokedex-screen-hero {
+      background: #0a1a0a;
+      border: 4px solid #1a2e1a;
+      border-radius: 10px;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5.5rem;
+      box-shadow: inset 0 0 30px rgba(0,200,0,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .pokedex-screen-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,255,0,0.025) 2px, rgba(0,255,0,0.025) 4px
+      );
+      pointer-events: none;
+    }
+    .hero-right { display: flex; flex-direction: column; gap: 1rem; }
+    .hero-id {
+      font-family: var(--pixel);
+      font-size: 0.42rem;
+      color: var(--red);
+      letter-spacing: 2px;
+    }
+    .hero-name {
+      font-family: var(--pixel);
+      font-size: 1.5rem;
+      color: var(--white);
+      text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+      line-height: 1.7;
+    }
+    .hero-location {
+      font-family: var(--pixel);
+      font-size: 0.4rem;
+      color: var(--yellow);
+      letter-spacing: 1px;
+    }
+    .card-types {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .type-badge {
+      font-family: var(--pixel);
+      font-size: 0.38rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+    .type-python { background: #3776ab; color: white; }
+    .type-ml { background: #ff6b35; color: white; }
+    .type-data { background: #2ecc71; color: #1a1a2e; }
+    .type-django { background: #092e20; color: #44b78b; border: 1px solid #44b78b; }
+    .hero-bio {
+      font-size: 0.88rem;
+      color: var(--gray);
+      line-height: 1.8;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 1rem;
+    }
+    .hero-status {
+      font-family: var(--pixel);
+      font-size: 0.38rem;
+      color: #2ecc71;
+      letter-spacing: 1px;
+    }
+    .hero-status::before {
+      content: '● ';
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .btn {
+      font-family: var(--pixel);
+      font-size: 0.42rem;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: transform 0.1s, box-shadow 0.1s;
+      display: inline-block;
+    }
+    .btn:active { transform: translateY(2px); }
+    .btn-primary {
+      background: var(--yellow);
+      color: var(--navy);
+      box-shadow: 0 4px 0 var(--yellow-dark);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--yellow-dark); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.3);
+      box-shadow: 0 4px 0 rgba(255,255,255,0.1);
+    }
+    .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(255,255,255,0.15); }
+    .btn-red {
+      background: var(--red);
+      color: white;
+      box-shadow: 0 4px 0 var(--red-dark);
+    }
+    .btn-red:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--red-dark); }
+
+    /* SECTIONS */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-family: var(--pixel);
+      font-size: 0.72rem;
+      color: var(--yellow);
+      letter-spacing: 3px;
+      margin-bottom: 0.4rem;
+      text-shadow: 2px 2px 0 var(--red);
+    }
+    .section-subtitle {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 3rem;
+    }
+
+    /* SKILLS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 2px solid rgba(255,215,0,0.15);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .stat-card:hover { border-color: var(--yellow); transform: translateY(-4px); }
+    .stat-name {
+      font-family: var(--pixel);
+      font-size: 0.48rem;
+      color: var(--yellow);
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+    }
+    .stat-bar-wrap { margin-bottom: 0.8rem; }
+    .stat-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-bottom: 4px;
+    }
+    .stat-bar {
+      height: 10px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .stat-fill {
+      height: 100%;
+      border-radius: 2px;
+      animation: fillBar 1.5s ease-out forwards;
+    }
+    @keyframes fillBar { from { width: 0; } }
+    .fill-python { background: linear-gradient(90deg,#3776ab,#5ba3d4); width:70%; }
+    .fill-pandas { background: linear-gradient(90deg,#130754,#6e40c9); width:68%; }
+    .fill-numpy { background: linear-gradient(90deg,#4b8bbe,#6db3f2); width:80%; }
+    .fill-sklearn { background: linear-gradient(90deg,#f59300,#ffba47); width:65%; }
+    .fill-shap { background: linear-gradient(90deg,#2ecc71,#55efc4); width:70%; }
+    .fill-nlp { background: linear-gradient(90deg,#9b59b6,#c39bd3); width:40%; }
+    .fill-streamlit{ background: linear-gradient(90deg,#ff4b4b,#ff7676); width:65%; }
+    .fill-fastapi { background: linear-gradient(90deg,#059862,#05998c); width:30%; }
+    .fill-git { background: linear-gradient(90deg,#f05033,#f4845f); width:62%; }
+    .fill-psql { background: linear-gradient(90deg,#336791,#5b9bd5); width:65%; }
+
+    /* EXPERIENCE */
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .exp-card {
+      background: var(--card-bg);
+      border: 2px solid rgba(255,215,0,0.15);
+      border-radius: 12px;
+      padding: 1.8rem;
+    }
+    .exp-company {
+      font-family: var(--pixel);
+      color: var(--yellow);
+      font-size: 0.55rem;
+      margin-bottom: 0.4rem;
+    }
+    .exp-role {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+    .exp-date {
+      font-family: var(--pixel);
+      font-size: 0.4rem;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+    .exp-desc {
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.75;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+    .project-card {
+      background: var(--card-bg);
+      border: 3px solid rgba(255,215,0,0.2);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      position: relative;
+    }
+    .project-card:hover {
+      transform: translateY(-8px) rotate(-0.5deg);
+      box-shadow: 0 20px 40px rgba(204,0,0,0.3), 0 0 0 1px var(--yellow);
+      border-color: var(--yellow);
+    }
+    .project-img {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.04) 50%, transparent 70%);
+      animation: shine 4s infinite;
+    }
+    @keyframes shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .img-lion { background: linear-gradient(135deg,#1a3a5c,#0d2137); }
+    .img-ww2 { background: linear-gradient(135deg,#2d1b00,#4a2c00); }
+    .project-body { padding: 1.5rem; }
+    .project-number {
+      font-family: var(--pixel);
+      font-size: 0.38rem;
+      color: var(--gray);
+      margin-bottom: 0.3rem;
+    }
+    .project-title {
+      font-family: var(--pixel);
+      font-size: 0.58rem;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+      line-height: 1.9;
+    }
+    .project-desc {
+      font-size: 0.8rem;
+      color: var(--gray);
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .tag {
+      font-size: 0.68rem;
+      padding: 3px 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px;
+      color: var(--gray);
+    }
+    .project-links { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .project-link {
+      font-family: var(--pixel);
+      font-size: 0.38rem;
+      padding: 8px 14px;
+      text-decoration: none;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+    .project-link:hover { opacity: 0.85; transform: translateY(-1px); }
+    .link-live { background: var(--red); color: white; }
+    .link-gh { background: rgba(255,255,255,0.08); color: var(--white); border: 1px solid rgba(255,255,255,0.18); }
+
+    /* CONTACT */
+    .contact-box {
+      background: var(--card-bg);
+      border: 3px solid rgba(255,215,0,0.25);
+      border-radius: 16px;
+      padding: 3rem;
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .contact-title {
+      font-family: var(--pixel);
+      font-size: 0.65rem;
+      color: var(--yellow);
+      margin-bottom: 1rem;
+      line-height: 2.2;
+    }
+    .contact-sub {
+      color: var(--gray);
+      font-size: 0.88rem;
+      margin-bottom: 2rem;
+      line-height: 1.75;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .email-text {
+      font-family: var(--pixel);
+      font-size: 0.55rem;
+      color: var(--yellow);
+      letter-spacing: 1px;
+    }
+
+    /* DIVIDER */
+    hr.divider {
+      border: none;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--red), var(--yellow), var(--red), transparent);
+      max-width: 400px;
+      margin: 0 auto;
+      opacity: 0.45;
+      position: relative;
+      z-index: 1;
+    }
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-family: var(--pixel);
+      font-size: 0.38rem;
+      color: var(--gray);
+      border-top: 2px solid rgba(255,215,0,0.08);
+      position: relative;
+      z-index: 1;
+      letter-spacing: 1px;
+      line-height: 2.5;
+    }
+    /* FADE IN */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* POKEMON - Further to sides */
+    .poke-sprite {
+      position: fixed;
+      z-index: 50;
+      cursor: pointer;
+      animation: pokefloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 8px rgba(255,215,0,0.35));
+      transition: filter 0.2s;
+      user-select: none;
+    }
+    #pikachu { bottom: 110px; left: 30px; }
+    #bulbasaur { top: 32%; left: 25px; }
+    #squirtle { bottom: 100px; right: 35px; }
+    #charizard { top: 35%; right: 12px; }
+
+    @keyframes pokefloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+    .poke-label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.3rem;
+      color: var(--yellow);
+      text-align: center;
+      margin-top: 3px;
+      opacity: 0;
+      transition: opacity 0.2s;
+      text-shadow: 1px 1px 0 #000;
+      letter-spacing: 1px;
+    }
+    .poke-sprite:hover .poke-label { opacity: 1; }
+
+    @media (max-width: 768px) {
+      .poke-sprite { display: none; }
+      .pokedex-hero { grid-template-columns: 1fr; }
+      .pokedex-screen-hero { max-width: 160px; margin: 0 auto; }
+      .hero-name { font-size: 1rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">ABHI.EXE</div>
+    <ul class="nav-links">
+      <li><a href="#skills">STATS</a></li>
+      <li><a href="#experience">EXPERIENCE</a></li>
+      <li><a href="#projects">POKEDEX</a></li>
+      <li><a href="#contact">CONTACT</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero" id="about">
+    <div class="pokedex-hero">
+      <div class="pokedex-screen-hero">🧑‍💻</div>
+      <div class="hero-right">
+        <div class="hero-id">✦ POKEDEX #001 — TRAINER PROFILE ✦</div>
+        <div class="hero-name">ABHI<br/>SHAH</div>
+        <div class="hero-location">📍 Ahmedabad, GJ</div>
+        <div class="card-types">
+          <span class="type-badge type-python">PYTHON</span>
+          <span class="type-badge type-ml">ML/AI</span>
+          <span class="type-badge type-data">DATA</span>
+          <span class="type-badge type-django">DJANGO</span>
+        </div>
+        <div class="hero-bio">
+          I'm a Computer Engineer passionate about Machine Learning and NLP, with a keen interest in building end-to-end AI solutions. During my internship as a Data Science Trainee at Appsrow, I gained hands-on experience in machine learning through data preprocessing, model development, and working with real-world ML pipelines. I'm currently learning FastAPI to deploy ML models as REST APIs and enjoy exploring practical applications of AI.
+
+        </div>
+        <div class="hero-status">OPEN TO PYTHON / ML ROLES</div>
+        <div class="cta-buttons">
+          <a href="#projects" class="btn btn-primary">VIEW PROJECTS</a>
+          <a href="https://github.com/Abhishah2004" target="_blank" class="btn btn-secondary">GITHUB</a>
+          <a href="https://www.linkedin.com/in/abhi-shah-107a37283/" target="_blank" class="btn btn-red">LINKEDIN</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="divider"/>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-title">▶ TRAINER STATS</div>
+    <div class="section-subtitle">Skills & Abilities</div>
+    <div class="stats-grid">
+      <div class="stat-card fade-in">
+        <div class="stat-name">⚡ LANGUAGES</div>
+        <div class="stat-bar-wrap">
+          <div class="stat-label"><span>Python</span><span>70/100</span></div>
+          <div class="stat-bar"><div class="stat-fill fill-python"></div></div>
+        </div>
+        <div class="stat-bar-wrap">
+          <div class="stat-label"><span>PostgreSQL</span><span>65/100</span></div>
+          <div class="stat-bar"><div class="stat-fill fill-psql"></div></div>
+        </div>
+      </div>
+      <div class="stat-card fade-in">
+        <div class="stat-name">🔥 ML / DATA SCIENCE</div>
+        <div class="stat-bar-wrap">
+          <div class="stat-label"><span>Scikit-learn (Tabular ML)</span><span>65/100</span></div>
+          <div class="stat-bar"><div class="stat-fill fill-sklearn"></div></div>
+        </div>
+        <div class="stat-bar-wrap">
+          <div class="stat-label"><span>Pandas / NumPy</span><span>68/100</span></div>
+          <div class="stat-bar"><div class="stat-fill fill-pandas"></div></div>
+        </div>
+        <div class="stat-bar-wrap">
+          <div class="stat-label"><span>SHAP Explainability</span><span>70/100</span></div>
+          <div class="stat-bar"><div class="stat-fill fill-shap"></div></div>
+        </div>
+        <div class="stat-bar-wrap">
+          <div class="stat-label"><span>NLP</span><span>40/100</span></div>
+          <div class="stat-bar"><div class="stat-fill fill-nlp"></div></div>
+        </div>
+      </div>
+      <div class="stat-card fade-in">
+        <div class="stat-name">🛠️ TOOLS & PLATFORMS</div>
+        <div class="stat-bar-wrap">
+          <div class="stat-label"><span>Streamlit</span><span>65/100</span></div>
+          <div class="stat-bar"><div class="stat-fill fill-streamlit"></div></div>
+        </div>
+        <div class="stat-bar-wrap">
+          <div class="stat-label"><span>FastAPI</span><span>30/100</span></div>
+          <div class="stat-bar"><div class="stat-fill fill-fastapi"></div></div>
+        </div>
+        <div class="stat-bar-wrap">
+          <div class="stat-label"><span>Git / GitHub</span><span>62/100</span></div>
+          <div class="stat-bar"><div class="stat-fill fill-git"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <hr class="divider"/>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-title">▶ FIELD TRAINING</div>
+    <div class="section-subtitle">Experience</div>
+    <div class="experience-grid">
+      <div class="exp-card fade-in">
+        <div class="exp-company">APPSROW • AHMEDABAD</div>
+        <div class="exp-role">Data Science Trainee Intern</div>
+        <div class="exp-date">Jan 2026 – Apr 2026</div>
+        <div class="exp-desc">
+          During my internship at Appsrow, I developed solid proficiency in essential data science tools 
+          such as Pandas, NumPy, and Matplotlib. I performed exploratory data analysis to identify patterns 
+          and insights in real-world datasets. I also studied and applied core machine learning algorithms 
+          including regression models, decision trees, and random forests while gaining practical exposure 
+          to the full machine learning pipeline.
+        </div>
+      </div>
+    </div>
+  </section>
+  <hr class="divider"/>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-title">▶ PROJECT POKEDEX</div>
+    <div class="section-subtitle">Deployed Builds</div>
+    <div class="projects-grid">
+      <div class="project-card fade-in">
+        <div class="project-img img-lion">🦁🚦</div>
+        <div class="project-body">
+          <div class="project-number">#001</div>
+          <div class="project-title">LIONCITY TRAFFIC<br/>INTELLIGENCE</div>
+          <div class="project-desc">
+            I analyzed an hourly traffic dataset containing temporal, environmental, and human activity factors. 
+            After performing exploratory analysis, I trained a Random Forest model that reached 85.5% accuracy 
+            in predicting congestion levels. I then built an interactive Streamlit application that allows 
+            real-time scenario testing with an integrated map and delivered live SHAP explanations for better 
+            model understanding.
+          </div>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Random Forest</span>
+            <span class="tag">SHAP</span>
+            <span class="tag">Streamlit</span>
+            <span class="tag">Plotly</span>
+          </div>
+          <div class="project-links">
+            <a href="https://lioncity-traffic-intelligence.streamlit.app/" class="project-link link-live" target="_blank">▶ LIVE APP</a>
+            <a href="https://github.com/Abhishah2004/LionCity-Traffic-Intelligence" class="project-link link-gh" target="_blank">GITHUB</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card fade-in">
+        <div class="project-img img-ww2">⚔️🗺️</div>
+        <div class="project-body">
+          <div class="project-number">#002</div>
+          <div class="project-title">WW2 BATTLE ANALYTICS<br/>& GEOSPATIAL VIZ</div>
+          <div class="project-desc">
+            I created a structured dataset of 70 major World War II battles from historical sources. 
+            Through extensive exploratory analysis and multiple visualizations, I uncovered important trends 
+            in casualties, terrain, and outcomes. I also developed an interactive geographical heatmap using 
+            Folium to visualize the global distribution of battles.
+          </div>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">Folium</span>
+            <span class="tag">Matplotlib</span>
+            <span class="tag">EDA</span>
+          </div>
+          <div class="project-links">
+            <a href="https://tinyurl.com/abhiWW2project" class="project-link link-live" target="_blank">▶ PROJECT</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <hr class="divider"/>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-box fade-in">
+      <div class="contact-title"> WANT TO BATTLE?<br/>LET'S CONNECT.</div>
+      <div class="contact-sub">
+        Open to Python / ML roles. Feel free to reach out.
+      </div>
+      <div class="contact-links">
+        <span class="email-text">abhishah538@gmail.com</span>
+        <a href="https://www.linkedin.com/in/abhi-shah-107a37283/" target="_blank" class="btn btn-red">LINKEDIN</a>
+        <a href="https://github.com/Abhishah2004" target="_blank" class="btn btn-secondary">GITHUB</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    CRAFTED BY ABHI SHAH • AHMEDABAD 2026 • GOTTA SHIP 'EM ALL
+  </footer>
+
+  <!-- POKEMON SPRITES -->
+  <div class="poke-sprite" id="pikachu" title="Pikachu!">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" width="90" height="90" alt="Pikachu"/>
+    <div class="poke-label">PIKACHU</div>
+  </div>
+  <div class="poke-sprite" id="bulbasaur" title="Bulbasaur!">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" width="88" height="88" alt="Bulbasaur"/>
+    <div class="poke-label">BULBASAUR</div>
+  </div>
+  <div class="poke-sprite" id="squirtle" title="Squirtle!">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png" width="88" height="88" alt="Squirtle"/>
+    <div class="poke-label">SQUIRTLE</div>
+  </div>
+  <div class="poke-sprite" id="charizard" title="Charizard!">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" width="110" height="110" alt="Charizard"/>
+    <div class="poke-label">CHARIZARD</div>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    const pokeCries = {
+      pikachu: 'PIKA PIKA! ⚡',
+      squirtle: 'SQUIRTLE! 💧',
+      bulbasaur: 'BULBA! 🌿',
+      charizard: 'CHARIZARD!! 🔥'
+    };
+    Object.keys(pokeCries).forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('click', () => {
+        const old = document.getElementById('poke-toast');
+        if (old) old.remove();
+        const toast = document.createElement('div');
+        toast.id = 'poke-toast';
+        toast.textContent = pokeCries[id];
+        toast.style.cssText = `
+          position:fixed; bottom:30px; left:50%;
+          transform:translateX(-50%);
+          background:#FFD700; color:#1a1a2e;
+          font-family:'Press Start 2P',monospace;
+          font-size:0.55rem; padding:12px 24px;
+          border-radius:8px; z-index:9999;
+          box-shadow:0 4px 0 #ccac00;
+          animation:toastpop 0.3s ease;
+          letter-spacing:1px;
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+      });
+    });
+
+    const s = document.createElement('style');
+    s.textContent = `@keyframes toastpop {
+      from { transform:translateX(-50%) scale(0.5); opacity:0; }
+      to { transform:translateX(-50%) scale(1); opacity:1; }
+    }`;
+    document.head.appendChild(s);
+
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `translateY(-8px) rotateY(${x*10}deg) rotateX(${-y*10}deg)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
+  </script>
+</body>
+</html>
